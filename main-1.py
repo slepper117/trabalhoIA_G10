@@ -10,9 +10,6 @@ warnings.filterwarnings("ignore")
 
 # CLASS SCHEDULING
 
-def atmost_three(*values):
-    return len(values) <= 3
-
 # | Sala 1  | Segunda | Terça | Quarta | Quinta | Sexta |   | AulasLesi | AulasLegi |
 # |---------|---------|-------|--------|--------|-------|---|-----------|-----------|
 # | 09h:11h | 111     | 121   | 131    | 141    | 151   |   | l11       | l21       |
@@ -36,24 +33,24 @@ weekDays = "Monday Tuesday Wednesday Thurday Friday".split()
 slotTime = "Tempo1 Tempo2 Tempo3 Tempo4".split()
 classRooms = "Room1 Room2".split()
 
-variables = set(classesLESI + weekDays + classRooms + slotTime)
+#variables = classesLESI + weekDays + classRooms + slotTime
 
 # domain
-dominio =  {}
-for var in variables:
-    dominio[var] = set(range(1, 6))     # list(range(1, 6))
-    dominio['l11'] = {1}
-    dominio['l12'] = {2}
-    dominio['l13'] = {3}
-    dominio['l14'] = {4}
-    dominio['l15'] = {5}
+dominio =  {
+    'l11': {1},
+    'l12': {2},
+    'l13': {3},
+    'l14': {4},
+    'l15': {5},
+    'weekDays': set(range(1, 6)),
+    'classRooms': set(range(1, 3))
+}
+
 
 # constraints
 restricoes =   [
-    Constraint(classesLESI, all_diff_constraint),
-    Constraint(weekDays, all_diff_constraint),
-    Constraint(slotTime, all_diff_constraint),
-    Constraint(classRooms, all_diff_constraint),
+    Constraint(('l11', 'l12', 'l13', 'l14', 'l15'), all_diff_constraint),
+    Constraint(('weekDays', 'classRooms'), all_diff_constraint),
 ]
 
 # Class scheduling -- Exec 40s
@@ -66,3 +63,11 @@ print(class_scheduling.variables)
 ans = ac_solver(class_scheduling, arc_heuristic=sat_up)
 
 print(ans)
+
+# Print result
+for h in range(1, 6):
+    print('Aula', h, end=' ')
+    for (var, val) in ans.items():
+        if val == h:
+            print(var, end=' ')
+    print()
