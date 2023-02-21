@@ -9,7 +9,7 @@ Esta disciplina faz parte do terceiro ano curricular da Licenciatura em Engenhar
 Este trabalho contou com a colaboração dos seguintes alunos:
 
 - 6160 - Renato Dantas
-- 6149 - Benjamin Diogo
+- 17214 - João Morais
 
 ## Contextualização do Trabalho
 
